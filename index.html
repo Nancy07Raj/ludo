@@ -130,7 +130,7 @@
         let greenPlus = 1;
         let data = JSON.parse(localStorage.getItem("ludo"));
         for (let i = 1; i <= 10; i++) {
-          $("#redStack").prepend(` <div class="red red${i}">${i}</div>`);
+          $("#redStack").prepend(` <div class="red red${i}"></div>`);
           $("#blueStack").prepend(` <div class="blue blue${i}"></div>`);
           $("#greenStack").prepend(` <div class="green green${i}"></div>`);
         }
@@ -201,7 +201,8 @@
             $("#ludo").empty();
             ludoDisplay();
           } else alert("Invalid Move");
-          redPlus += 1;
+          if (redPlus < 10) redPlus += 1;
+          else redPlus = 1;
         });
         $("#blueAdd").click(function () {
           if (data == null) alert("Invalid Move");
@@ -215,7 +216,8 @@
             $("#ludo").empty();
             ludoDisplay();
           } else alert("Invalid Move");
-          bluePlus += 1;
+          if (bluePlus < 10) bluePlus += 1;
+          else bluePlus = 1;
         });
         $("#greenAdd").click(function () {
           if (data == null) alert("Invalid Move");
@@ -229,7 +231,8 @@
             $("#ludo").empty();
             ludoDisplay();
           } else alert("Invalid Move");
-          greenPlus += 1;
+          if (greenPlus < 10) greenPlus += 1;
+          else greenPlus = 1;
         });
       });
     </script>
