@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ludo</title>
+    <style>
+      #container {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 20px;
+        background-color: #e4cda7;
+        height: 100vh;
+      }
+      #redStack {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        border-right: 1px solid black;
+        width: 300px;
+      }
+      #blueStack {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        border-right: 1px solid black;
+        width: 300px;
+      }
+      #greenStack {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        border-right: 1px solid black;
+        width: 300px;
+      }
+      #ludo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        width: 200px;
+      }
+      .red {
+        height: 50px;
+        width: 50px;
+        background-color: red;
+        box-shadow: 1px 1px 1px darkgray;
+        border: 1px solid black;
+        color: black;
+        margin: 5px 0;
+      }
+      .blue {
+        height: 50px;
+        width: 50px;
+        background-color: blue;
+        box-shadow: 1px 1px 1px darkgray;
+        border: 1px solid black;
+        color: black;
+        margin: 5px 0;
+      }
+      .green {
+        height: 50px;
+        width: 50px;
+        background-color: green;
+        box-shadow: 1px 1px 1px darkgray;
+        border: 1px solid black;
+        color: black;
+        margin: 5px 0;
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <div id="container">
+      <div id="redStack">
+        <div>
+          <button type="button" id="redAdd"><i class="fas fa-plus"></i></button>
+          <button type="button" id="redMinus">
+            <i class="fas fa-minus"></i>
+          </button>
+        </div>
+      </div>
+      <div id="blueStack">
+        <div>
+          <button type="button" id="blueAdd">
+            <i class="fas fa-plus"></i>
+          </button>
+          <button type="button" id="blueMinus">
+            <i class="fas fa-minus"></i>
+          </button>
+        </div>
+      </div>
+      <div id="greenStack">
+        <div>
+          <button type="button" id="greenAdd">
+            <i class="fas fa-plus"></i>
+          </button>
+          <button type="button" id="greenMinus">
+            <i class="fas fa-minus"></i>
+          </button>
+        </div>
+      </div>
+      <div id="ludo"></div>
+    </div>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+      integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script>
+      $(document).ready(function () {
+        localStorage.removeItem("ludo");
+        let redNeg = 1;
+        let greenNeg = 1;
+        let blueNeg = 1;
+        let redPlus = 1;
+        let bluePlus = 1;
+        let greenPlus = 1;
+        let data = JSON.parse(localStorage.getItem("ludo"));
+        for (let i = 1; i <= 10; i++) {
+          $("#redStack").prepend(` <div class="red red${i}">${i}</div>`);
+          $("#blueStack").prepend(` <div class="blue blue${i}"></div>`);
+          $("#greenStack").prepend(` <div class="green green${i}"></div>`);
+        }
+
+        $("#redMinus").click(function () {
+          checkLudo();
+          if (checkLudo() == true) {
+            if (data == null) data = ["red"];
+            else data.push("red");
+            localStorage.setItem("ludo", JSON.stringify(data));
+            $(`.red${redNeg}`).remove();
+            $("#ludo").empty();
+            ludoDisplay();
+            if (redNeg < 10) redNeg += 1;
+            else redNeg = 1;
+          }
+        });
+
+        $("#blueMinus").click(function () {
+          checkLudo();
+          if (checkLudo() == true) {
+            if (data == null) data = ["blue"];
+            else data.push("blue");
+            localStorage.setItem("ludo", JSON.stringify(data));
+            $(`.blue${blueNeg}`).remove();
+            $("#ludo").empty();
+            ludoDisplay();
+            if (blueNeg < 10) blueNeg += 1;
+            else blueNeg = 1;
+          }
+        });
+
+        $("#greenMinus").click(function () {
+          checkLudo();
+          if (checkLudo() == true) {
+            if (data == null) data = ["green"];
+            else data.push("green");
+            localStorage.setItem("ludo", JSON.stringify(data));
+            $(`.green${greenNeg}`).remove();
+            $("#ludo").empty();
+            ludoDisplay();
+            if (greenNeg < 10) greenNeg += 1;
+            else greenNeg = 1;
+          }
+        });
+        function checkLudo() {
+          let data = JSON.parse(localStorage.getItem("ludo"));
+          if (data == null || data.length < 10) {
+            return true;
+          } else {
+            alert("Stack Full");
+            return false;
+          }
+        }
+        function ludoDisplay() {
+          data = JSON.parse(localStorage.getItem("ludo"));
+          for (i = 0; i < data.length; i++) {
+            $("#ludo").prepend(`<div class="${data[i]}"></div>`);
+          }
+        }
+        $("#redAdd").click(function () {
+          if (data == null) alert("Invalid Move");
+          let lastIndex = data.length - 1;
+          if (data[lastIndex] == "red") {
+            $("#redStack").prepend(` <div class="red red${redPlus}"></div>`);
+            data.splice(lastIndex, 1);
+            localStorage.setItem("ludo", JSON.stringify(data));
+            $("#ludo").empty();
+            ludoDisplay();
+          } else alert("Invalid Move");
+          redPlus += 1;
+        });
+        $("#blueAdd").click(function () {
+          if (data == null) alert("Invalid Move");
+          let lastIndex = data.length - 1;
+          if (data[lastIndex] == "blue") {
+            $("#blueStack").prepend(
+              ` <div class="blue blue${bluePlus}"></div>`
+            );
+            data.splice(lastIndex, 1);
+            localStorage.setItem("ludo", JSON.stringify(data));
+            $("#ludo").empty();
+            ludoDisplay();
+          } else alert("Invalid Move");
+          bluePlus += 1;
+        });
+        $("#greenAdd").click(function () {
+          if (data == null) alert("Invalid Move");
+          let lastIndex = data.length - 1;
+          if (data[lastIndex] == "green") {
+            $("#greenStack").prepend(
+              ` <div class="green green${greenPlus}"></div>`
+            );
+            data.splice(lastIndex, 1);
+            localStorage.setItem("ludo", JSON.stringify(data));
+            $("#ludo").empty();
+            ludoDisplay();
+          } else alert("Invalid Move");
+          greenPlus += 1;
+        });
+      });
+    </script>
+  </body>
+</html>
